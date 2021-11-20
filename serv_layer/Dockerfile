@@ -9,7 +9,9 @@ WORKDIR /code/
 
 # Install dependencies
 RUN pip install pipenv
-COPY Pipfile Pipfile.lock /code/
+COPY Pipfile Pipfile.lock wait-for-it.sh /code/ 
+# https://github.com/vishnubob/wait-for-it
+RUN chmod +x /code/wait-for-it.sh
 RUN pipenv install --system --dev
 
 COPY . /code/
