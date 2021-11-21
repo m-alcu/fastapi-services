@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from models.posts import Post as ModelPost
+from services.post import Post as ServicePost
 
 
 def test_create_post(test_app, monkeypatch):
@@ -12,7 +12,7 @@ def test_create_post(test_app, monkeypatch):
     async def mock_post(**kwargs):
         return 1
 
-    monkeypatch.setattr(ModelPost, "create", mock_post)
+    monkeypatch.setattr(ServicePost, "create", mock_post)
 
     response = test_app.post("/api/post", data=json.dumps(test_request_payload),)
 
@@ -34,7 +34,7 @@ def test_read_post(test_app, monkeypatch):
     async def mock_get(id):
         return test_data
 
-    monkeypatch.setattr(ModelPost, "get", mock_get)
+    monkeypatch.setattr(ServicePost, "get", mock_get)
 
     response = test_app.get("/api/post/1")
     assert response.status_code == 200
@@ -46,7 +46,7 @@ def test_read_post_incorrect_id(test_app, monkeypatch):
     async def mock_get(id):
         return None
 
-    monkeypatch.setattr(ModelPost, "get", mock_get)
+    monkeypatch.setattr(ServicePost, "get", mock_get)
 
     response = test_app.get("/api/post/999")
     assert response.status_code == 404
@@ -65,7 +65,7 @@ def test_read_all_posts(test_app, monkeypatch):
     async def mock_get_all():
         return test_data
 
-    monkeypatch.setattr(ModelPost, "get_all", mock_get_all)
+    monkeypatch.setattr(ServicePost, "get_all", mock_get_all)
 
     response = test_app.get("/api/post/")
     assert response.status_code == 200
@@ -79,12 +79,12 @@ def test_update_post(test_app, monkeypatch):
     async def mock_get(id):
         return test_response_payload
 
-    monkeypatch.setattr(ModelPost, "get", mock_get)
+    monkeypatch.setattr(ServicePost, "get", mock_get)
 
     async def mock_put(id, **kwargs):
         return None
 
-    monkeypatch.setattr(ModelPost, "put", mock_put)
+    monkeypatch.setattr(ServicePost, "put", mock_put)
 
     response = test_app.put("/api/post/1", data=json.dumps(test_request_payload))
     assert response.status_code == 200
@@ -106,7 +106,7 @@ def test_update_post_invalid(test_app, monkeypatch, id, payload, status_code):
     async def mock_get(id):
         return None
 
-    monkeypatch.setattr(ModelPost, "get", mock_get)
+    monkeypatch.setattr(ServicePost, "get", mock_get)
 
     response = test_app.put(f"/api/post/{id}", data=json.dumps(payload),)
     assert response.status_code == status_code
@@ -118,12 +118,12 @@ def test_remove_post(test_app, monkeypatch):
     async def mock_get(id):
         return test_data
 
-    monkeypatch.setattr(ModelPost, "get", mock_get)
+    monkeypatch.setattr(ServicePost, "get", mock_get)
 
     async def mock_delete(id):
         return None
 
-    monkeypatch.setattr(ModelPost, "delete", mock_delete)
+    monkeypatch.setattr(ServicePost, "delete", mock_delete)
 
     response = test_app.delete("/api/post/1")
     assert response.status_code == 200
@@ -134,7 +134,7 @@ def test_remove_post_incorrect_id(test_app, monkeypatch):
     async def mock_get(id):
         return None
 
-    monkeypatch.setattr(ModelPost, "get", mock_get)
+    monkeypatch.setattr(ServicePost, "get", mock_get)
 
     response = test_app.delete("/api/post/999")
     assert response.status_code == 404
