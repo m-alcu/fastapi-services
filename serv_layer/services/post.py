@@ -1,5 +1,5 @@
 from db import db
-from models.posts import posts
+from models import posts
 
 class Post:
 
