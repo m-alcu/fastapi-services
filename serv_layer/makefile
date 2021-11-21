@@ -14,13 +14,13 @@ destroy:
 	docker-compose down 
 
 makemigrations:
-	docker-compose run web alembic revision --autogenerate
+	docker-compose run server alembic revision --autogenerate
 
 migrate:
-	docker-compose run web alembic upgrade head
+	docker-compose run server alembic upgrade head
 
 shell:
-	docker-compose run web bash 
+	docker-compose run server bash 
 
 python:
-	docker-compose run web ipython
+	docker-compose run server ipython
