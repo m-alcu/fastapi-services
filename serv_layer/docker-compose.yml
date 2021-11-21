@@ -9,6 +9,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=test_db
+
   server:
     build: .
     command: bash -c "./wait-for-it.sh db:5432 --timeout=60 --strict -- alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
@@ -21,11 +22,13 @@ services:
 
   api:
     build: ../api_layer
-    command: bash -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8001 --reload"
+    command: bash -c "uvicorn main:app --host 0.0.0.0 --port 8001 --reload"
     volumes:
       - .:/code
     ports:
       - "8001:8001"
+    environment:
+      - SERVER="server:8000"
 
   pgadmin:
     container_name: pgadmin
