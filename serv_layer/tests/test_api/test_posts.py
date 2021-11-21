@@ -9,7 +9,7 @@ def test_create_post(test_app, monkeypatch):
     test_request_payload = {"title": "something", "body": "something else", "is_published": True}
     test_response_payload = {"id": 1}
 
-    async def mock_post(*args, **kwargs):
+    async def mock_post(**kwargs):
         return 1
 
     monkeypatch.setattr(ModelPost, "create", mock_post)
